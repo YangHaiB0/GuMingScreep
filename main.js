@@ -1,5 +1,6 @@
 require('./mount')
 const RoomsUtils = require('./utils.rooms');
+const SpawnUtil = require('./struct.spawn')
 const roleHarvester = require('role.harvester');
 const roleUpgrader = require('role.upgrader');
 const roleBuilder = require('role.builder');
@@ -13,9 +14,14 @@ module.exports.loop = function () {
         }
     }
     for (let room in Game.rooms) {
+        let spawns = room.find(FIND_MY_SPAWNS);
+        SpawnUtil.spawn(spawns[0])
         // todo Tower简单控制逻辑
-        let tower = Game.getObjectById('5edd05b2dbbd346f5a921d1f');
-        if (tower) {
+        for (let tower in room.find(FIND_MY_STRUCTURES, {
+            filter: struct => {
+                return struct.type = STRUCTURE_TOWER
+            }
+        })) {
             // 寻找需要修复的结构
             let closestDamagedStructure = RoomsUtils.findLowHealthStructures(room, 0.2)
             // 修复建筑

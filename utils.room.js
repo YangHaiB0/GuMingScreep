@@ -56,8 +56,8 @@ module.exports = {
         let roomName = room.name || room.roomName || room;
         // 非空判断
         if (!lowHealthStructs[roomName] || lowHealthStructs[roomName].length === 0) {
-            return
-        };
+            return;
+        }
         // 遍历低血量结构数组
         if (!lowHealthStructs[roomName]) {
             lowHealthStructs[roomName] = room.find(FIND_STRUCTURES, {
