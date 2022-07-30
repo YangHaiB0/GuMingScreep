@@ -71,7 +71,7 @@ const structSpawn = {
     getInitialData(roomId) {//todo 整理初始化赋值
         let data = {roomIds: roomId, sourceIds: {}};
         for (let name in Game.creeps) {
-            creep = Game.creeps[name];
+            let creep = Game.creeps[name];
         }
         data.updTime = Game.time;
         return data;

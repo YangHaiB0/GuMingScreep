@@ -10,8 +10,8 @@ let lowHealthWallsAndRamparts = {};
 module.exports = {
     /**
      * 重置内存中变量
-     * 
-     * @param {boolean} reset 
+     *
+     * @param {boolean} reset
      */
     gc(reset) {
         if (reset || Game.time % 25 === 0) {
@@ -21,12 +21,12 @@ module.exports = {
     },
     /**
      * 通过房间hash初始化数据
-     * 
-     * @param {Game.rooms[i]} roomId 
-     * @returns 
+     *
+     * @param {Game.rooms[i]} roomId
+     * @returns
      */
     getInitialData(roomId) {
-        let data = { roomIds: roomId, sourceIds: {} };
+        let data = {roomIds: roomId, sourceIds: {}};
         Game.rooms[roomId].find(FIND_SOURCES).forEach((source) => {
             data.sourceIds[source.id] = 0;
         });
@@ -35,7 +35,7 @@ module.exports = {
     },
     /**
      * 血量百分比
-     * @returns 
+     * @returns
      */
     healthRatio() {
         if (!this.hits || !this.hitsMax) {
@@ -50,7 +50,7 @@ module.exports = {
      * @param {Room} room 房间
      * @param {number} structureThreshold 结构修理阈值
      * @param {number} roadThreshold 道理修理阈值
-     * @returns 
+     * @returns
      */
     findLowHealthStructures(room, structureThreshold, roadThreshold = 0.2) {
         let roomName = room.name || room.roomName || room;
@@ -86,9 +86,9 @@ module.exports = {
     },
     /**
      * 找到一个低耐久的墙体
-     * @param {Room} room 
-     * @param {number} desiredHealth 
-     * @returns 
+     * @param {Room} room
+     * @param {number} desiredHealth
+     * @returns
      */
     findLowHealthWallsAndRamparts(room, desiredHealth) {
         let roomName = room.name || room.roomName || room;
