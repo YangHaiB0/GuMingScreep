@@ -1,16 +1,19 @@
+const structSpawn = require('./struct.spawn')
 const roleBuilder = {
     run: function (creep) {
-        // 正在修筑 且 自身能量为空 ==> 设置内存为 不可修建
-        if (creep.memory.building && creep.store[RESOURCE_ENERGY] === 0) {
-            creep.memory.building = false;
+        if (creep.memory.working === undefined) {
+            creep.memory.working = true;
+        }
+        if (creep.memory.working && creep.store[RESOURCE_ENERGY] === 0) {
+            creep.memory.working = false;
             creep.say('🔄 harvest');
         }
         // 不在修筑 且 能量满 ==> 设置内存为 可修建
-        if (!creep.memory.building && creep.store.getFreeCapacity() === 0) {
-            creep.memory.building = true;
+        if (!creep.memory.working && creep.store.getFreeCapacity() === 0) {
+            creep.memory.working = true;
             creep.say('🚧 build');
         }
-        if (creep.memory.building) {
+        if (creep.memory.working) {
             // 如果可修建 寻找结构
             let targets = creep.room.find(FIND_CONSTRUCTION_SITES);
             if (targets.length) {
@@ -19,11 +22,7 @@ const roleBuilder = {
                 }
             }
         } else {
-            // 寻找资源
-            let sources = creep.room.find(FIND_SOURCES);
-            if (creep.harvest(sources[0]) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
+            structSpawn.simpleGetSource(creep);
         }
     }
 };

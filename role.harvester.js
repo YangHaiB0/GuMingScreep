@@ -1,12 +1,18 @@
+const structSpawn = require('./struct.spawn')
 const roleHarvester = {
     run: function (creep) {
-        // 能量空间未满 收获资源
-        if (creep.store.getFreeCapacity() > 0) {
-            let sources = creep.room.find(FIND_SOURCES);
-            if (creep.harvest(sources[0]) === ERR_NOT_IN_RANGE) {
-                creep.moveTo(sources[0], {visualizePathStyle: {stroke: '#ffaa00'}});
-            }
-        } else {
+        if (creep.memory.working === undefined) {
+            creep.memory.working = true;
+        }
+        if (creep.memory.working && creep.store[RESOURCE_ENERGY] === 0) {
+            creep.memory.working = false;
+            creep.say('🔄 harvest');
+        }
+        if (!creep.memory.working && creep.store.getFreeCapacity() === 0) {
+            creep.memory.working = true;
+            creep.say('save energy');
+        }
+        if (creep.memory.working) {
             // 能量充足 寻找需要能量的结构
             let targets = creep.room.find(FIND_STRUCTURES, {
                 filter: (structure) => {
@@ -22,6 +28,8 @@ const roleHarvester = {
                     creep.moveTo(targets[0], {visualizePathStyle: {stroke: '#ffffff'}});
                 }
             }
+        } else {
+            structSpawn.simpleGetSource(creep);
         }
     }
 };
